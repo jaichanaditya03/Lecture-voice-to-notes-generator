@@ -4,7 +4,7 @@ Extracts transcripts directly from YouTube videos using the official transcript 
 This bypasses bot detection by using YouTube's built-in captions instead of downloading audio.
 """
 import re
-from youtube_transcript_api import YouTubeTranscriptAPI
+from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api._errors import TranscriptsDisabled, NoTranscriptFound
 
 
@@ -48,11 +48,11 @@ def get_youtube_transcript(url: str) -> str:
         
         # Get transcript (tries English first, then any available language)
         try:
-            transcript_list = YouTubeTranscriptAPI.get_transcript(video_id, languages=['en'])
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
         except NoTranscriptFound:
             # Try to get any available transcript
             print("⚠️  English transcript not found, trying other languages...")
-            transcript_list = YouTubeTranscriptAPI.get_transcript(video_id)
+            transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
         
         # Combine all transcript segments into one text
         full_transcript = " ".join([entry['text'] for entry in transcript_list])
