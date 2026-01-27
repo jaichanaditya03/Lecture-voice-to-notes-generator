@@ -44,7 +44,14 @@ const UploadBox = ({ onFileSelect, onTranscribe, isTranscribing, selectedFile, o
             }
         } catch (error) {
             console.error(error);
-            toast.error('Failed to process link. Please check the URL.', { id: toastId });
+            const errorMessage = error.response?.data?.error || error.message;
+
+            // Check if it's a YouTube bot detection error
+            if (errorMessage.includes('bot') || errorMessage.includes('Sign in')) {
+                toast.error('YouTube is blocking automated downloads. Please try uploading the audio file directly instead.', { id: toastId, duration: 5000 });
+            } else {
+                toast.error(`Failed to process link: ${errorMessage}`, { id: toastId });
+            }
         } finally {
             setIsFetchingLink(false);
         }
