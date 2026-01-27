@@ -4,7 +4,7 @@ An intelligent web application that converts lecture audio into comprehensive st
 
 ## 🌐 Live Demo
 
-**[Try it here →](your-deployment-link-here)**
+**[Try it here →](https://lecture-voice-to-notes-generator-git-main-jaichans-projects.vercel.app/)**
 
 ## ✨ Features
 
