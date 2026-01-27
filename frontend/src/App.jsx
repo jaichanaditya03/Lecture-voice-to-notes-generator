@@ -45,9 +45,7 @@ function App() {
     formData.append('file', file);
 
     try {
-      const response = await api.post('/api/transcribe', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      const response = await api.post('/transcribe', formData);
       setTranscript(response.data.transcript);
       toast.success('Audio transcribed successfully!', { id: toastId });
       setCurrentStep(2); // Move to transcript step
