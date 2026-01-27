@@ -51,7 +51,17 @@ function App() {
       setCurrentStep(2); // Move to transcript step
     } catch (error) {
       console.error(error);
-      toast.error('Failed to transcribe audio.', { id: toastId });
+
+      // Check if it's a timeout error
+      if (error.code === 'ECONNABORTED' || error.message?.includes('timeout')) {
+        toast.error('Transcription is taking longer than expected. The file might be too large or the server is busy. Please try again or use a smaller file.', {
+          id: toastId,
+          duration: 6000
+        });
+      } else {
+        toast.error(`Failed to transcribe audio: ${error.response?.data?.error || error.message}`, { id: toastId });
+      }
+
       // MOCK DATA FOR DEMO
       if (import.meta.env.DEV) {
         setTimeout(() => {
