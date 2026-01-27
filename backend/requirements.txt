@@ -1,0 +1,39 @@
+# Core FastAPI dependencies
+fastapi==0.128.0
+uvicorn==0.40.0
+python-multipart==0.0.21
+python-dotenv==1.2.1
+
+# Groq AI
+groq==1.0.0
+
+# HTTP and networking
+httpx==0.28.1
+httpcore==1.0.9
+requests==2.32.5
+
+# Data validation
+pydantic==2.12.5
+pydantic_core==2.41.5
+
+# Audio/Video processing
+static_ffmpeg==2.13
+yt-dlp==2025.12.8
+
+# Utilities
+annotated-types==0.7.0
+anyio==4.12.1
+certifi==2026.1.4
+charset-normalizer==3.4.4
+click==8.3.1
+colorama==0.4.6
+distro==1.9.0
+filelock==3.20.3
+h11==0.16.0
+idna==3.11
+sniffio==1.3.1
+starlette==0.50.0
+typing_extensions==4.15.0
+urllib3==2.6.3
+
+# Note: Removed pywin32-ctypes (Windows-only) for Linux deployment
