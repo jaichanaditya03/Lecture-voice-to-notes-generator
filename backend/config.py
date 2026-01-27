@@ -19,5 +19,6 @@ def get_groq_client():
 CORS_ORIGINS = [
     "http://localhost:5173",
     "https://lecture-voice-to-notes-generator-nine.vercel.app"
+    "https://lecture-voice-to-notes-generator-git-main-jaichans-projects.vercel.app/"
 ]
 
