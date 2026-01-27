@@ -19,6 +19,7 @@ pydantic_core==2.41.5
 # Audio/Video processing
 static_ffmpeg==2.13
 yt-dlp==2025.12.8
+youtube-transcript-api==0.6.2
 
 # Utilities
 annotated-types==0.7.0

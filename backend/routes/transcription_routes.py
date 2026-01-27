@@ -9,6 +9,7 @@ from models import YouTubeRequest
 from config import get_groq_client
 from services.audio_service import process_audio_file
 from services.youtube_service import download_audio_from_url, download_audio_from_generic_link
+from services.youtube_transcript_service import get_youtube_transcript, is_youtube_url
 
 router = APIRouter(prefix="/api", tags=["transcription"])
 
@@ -94,7 +95,20 @@ async def fetch_audio(request: YouTubeRequest):
     try:
         print(f"🔗 Processing Link: {request.url}")
         
-        # Download audio from link
+        # For YouTube URLs, try transcript extraction first (faster and bypasses bot detection)
+        if is_youtube_url(request.url):
+            print("📹 YouTube URL detected - trying transcript extraction first...")
+            try:
+                transcript_text = get_youtube_transcript(request.url)
+                print("✅ Transcript extracted successfully from YouTube captions!")
+                print(f"📊 Transcript length: {len(transcript_text)} characters")
+                return {"transcript": transcript_text}
+            except Exception as transcript_error:
+                print(f"⚠️  Transcript extraction failed: {transcript_error}")
+                print("🔄 Falling back to audio download method...")
+                # Continue to audio download fallback below
+        
+        # Download audio from link (for non-YouTube or if transcript extraction failed)
         final_filename = download_audio_from_generic_link(request.url)
 
         # Process audio file (handles chunking for large files)
