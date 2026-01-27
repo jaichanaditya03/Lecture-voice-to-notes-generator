@@ -17,7 +17,10 @@ def download_audio_from_url(url: str, preferred_codec: str = 'm4a') -> str:
             'preferredcodec': preferred_codec,
         }],
         'quiet': True,
-        'no_warnings': True
+        'no_warnings': True,
+        # Add headers to bypass bot detection
+        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
     }
 
     print(f"⬇️  Downloading audio from URL...")
@@ -45,7 +48,10 @@ def download_audio_from_generic_link(url: str) -> str:
             'preferredquality': '192',
         }],
         'quiet': True,
-        'no_warnings': True
+        'no_warnings': True,
+        # Add headers to bypass bot detection
+        'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'extractor_args': {'youtube': {'player_client': ['android', 'web']}},
     }
 
     print("⬇️  Downloading audio from link...")
