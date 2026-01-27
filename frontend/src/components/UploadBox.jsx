@@ -34,7 +34,7 @@ const UploadBox = ({ onFileSelect, onTranscribe, isTranscribing, selectedFile, o
         const toastId = toast.loading('Fetching and transcribing link... (This may take a while)');
 
         try {
-            const response = await api.post('/fetch-audio', { url: linkUrl });
+            const response = await api.post('/api/fetch-audio', { url: linkUrl });
             if (response.data.transcript) {
                 // Success
                 toast.dismiss(toastId);
