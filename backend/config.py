@@ -22,7 +22,6 @@ CORS_ORIGINS = [
     "http://localhost:3000",
     "https://lecture-voice-to-notes-generator-nine.vercel.app",
     "https://lecture-voice-to-notes-generator-git-main-jaichans-projects.vercel.app",
-    # Allow all Vercel preview deployments
     "https://*.vercel.app",
 ]
 

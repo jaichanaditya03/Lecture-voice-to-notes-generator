@@ -26,8 +26,8 @@ def process_audio_file(file_path: str, client):
 
     print(f"📦 Large file detected ({file_size / 1024 / 1024:.2f} MB). Splitting with FFmpeg...")
     
-    # Create chunks directory
-    chunk_dir = f"chunks_{uuid.uuid4()}"
+    # Create chunks directory in /tmp (Render-compatible)
+    chunk_dir = os.path.join("/tmp", f"chunks_{uuid.uuid4()}")
     os.makedirs(chunk_dir, exist_ok=True)
     
     output_pattern = os.path.join(chunk_dir, "chunk_%03d.mp3")
