@@ -1,5 +1,6 @@
 import os
 import uuid
+import tempfile
 import yt_dlp
 
 def download_audio_from_url(url: str, preferred_codec: str = 'm4a') -> str:
@@ -7,7 +8,7 @@ def download_audio_from_url(url: str, preferred_codec: str = 'm4a') -> str:
     Download audio from a URL (YouTube or other supported platforms).
     Returns the path to the downloaded file.
     """
-    temp_filename = os.path.join("/tmp", f"temp_{uuid.uuid4()}.{preferred_codec}")
+    temp_filename = os.path.join(tempfile.gettempdir(), f"temp_{uuid.uuid4()}.{preferred_codec}")
     
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -50,7 +51,7 @@ def download_audio_from_generic_link(url: str) -> str:
     Returns the path to the downloaded file.
     """
     job_id = str(uuid.uuid4())
-    temp_base = os.path.join("/tmp", f"temp_{job_id}")
+    temp_base = os.path.join(tempfile.gettempdir(), f"temp_{job_id}")
     
     ydl_opts = {
         'format': 'bestaudio/best',
@@ -86,9 +87,9 @@ def download_audio_from_generic_link(url: str) -> str:
     
     # Find the generated file in /tmp
     final_filename = None
-    for file in os.listdir("/tmp"):
+    for file in os.listdir(tempfile.gettempdir()):
         if file.startswith(os.path.basename(temp_base)):
-            final_filename = os.path.join("/tmp", file)
+            final_filename = os.path.join(tempfile.gettempdir(), file)
             break
     
     if not final_filename:

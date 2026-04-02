@@ -19,7 +19,7 @@ async def summarize_transcript(request: TranscriptRequest):
     
     try:
         summary = generate_summary(client, request.transcript)
-        return {"summary": summary, "notes": summary}
+        return {"summary": summary}
 
     except Exception as e:
         print(f"❌ Summarize Error: {type(e).__name__}: {e}")

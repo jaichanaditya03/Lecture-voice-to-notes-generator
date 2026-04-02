@@ -2,6 +2,7 @@ import os
 import uuid
 import subprocess
 import shutil
+import tempfile
 from utils import retry_with_backoff
 
 def process_audio_file(file_path: str, client):
@@ -26,8 +27,8 @@ def process_audio_file(file_path: str, client):
 
     print(f"📦 Large file detected ({file_size / 1024 / 1024:.2f} MB). Splitting with FFmpeg...")
     
-    # Create chunks directory in /tmp (Render-compatible)
-    chunk_dir = os.path.join("/tmp", f"chunks_{uuid.uuid4()}")
+    # Create chunks directory in system temp dir (cross-platform)
+    chunk_dir = os.path.join(tempfile.gettempdir(), f"chunks_{uuid.uuid4()}")
     os.makedirs(chunk_dir, exist_ok=True)
     
     output_pattern = os.path.join(chunk_dir, "chunk_%03d.mp3")
@@ -41,12 +42,12 @@ def process_audio_file(file_path: str, client):
         output_pattern
     ]
     
+    full_text = []  # Declared before try so except block can safely reference it
     try:
         # Run ffmpeg (capture output to disable verbose logs)
         subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         chunks = sorted(os.listdir(chunk_dir))
-        full_text = []
         
         print(f"📦 Split into {len(chunks)} chunks")
         

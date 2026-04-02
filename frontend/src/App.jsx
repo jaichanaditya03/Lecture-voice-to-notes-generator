@@ -61,17 +61,6 @@ function App() {
       } else {
         toast.error(`Failed to transcribe audio: ${error.response?.data?.error || error.message}`, { id: toastId });
       }
-
-      // MOCK DATA FOR DEMO
-      if (import.meta.env.DEV) {
-        setTimeout(() => {
-          setTranscript("This is a simulated transcript of a lecture about Artificial Intelligence. AI is transforming the world through machine learning, neural networks, and deep learning algorithms. Key concepts include supervised learning, unsupervised learning, and reinforcement learning.");
-          setCurrentStep(2);
-          setLoadingStep(null);
-          toast.dismiss(toastId);
-        }, 1500);
-        return;
-      }
     } finally {
       setLoadingStep(null);
     }
@@ -88,16 +77,6 @@ function App() {
     } catch (error) {
       console.error(error);
       toast.error('Failed to generate notes.', { id: toastId });
-      // MOCK DATA
-      if (import.meta.env.DEV) {
-        setTimeout(() => {
-          setNotes("# Lecture Notes: AI Overview\n\n## Key Concepts\n- **Artificial Intelligence**: The simulation of human intelligence by machines\n- **Machine Learning**: Algorithms that improve through experience\n- **Neural Networks**: Computing systems inspired by biological neural networks\n- **Deep Learning**: ML techniques using multiple layers\n\n## Learning Types\n1. Supervised Learning\n2. Unsupervised Learning\n3. Reinforcement Learning");
-          setCurrentStep(3);
-          setLoadingStep(null);
-          toast.dismiss(toastId);
-        }, 1500);
-        return;
-      }
     } finally {
       setLoadingStep(null);
     }
@@ -115,29 +94,6 @@ function App() {
     } catch (error) {
       console.error(error);
       toast.error('Error creating quiz.', { id: toastId });
-      // MOCK DATA
-      if (import.meta.env.DEV) {
-        setTimeout(() => {
-          setQuiz([
-            { question: "What is Artificial Intelligence?", options: ["Simulation of human intelligence", "A programming language", "A database system", "An operating system"], answer: "Simulation of human intelligence" },
-            { question: "Which learning type uses labeled data?", options: ["Unsupervised Learning", "Supervised Learning", "Reinforcement Learning", "Transfer Learning"], answer: "Supervised Learning" },
-            { question: "What are Neural Networks inspired by?", options: ["Computer circuits", "Biological neural networks", "Mathematical equations", "Cloud computing"], answer: "Biological neural networks" },
-            { question: "What is Deep Learning?", options: ["Surface-level analysis", "ML with multiple layers", "Basic programming", "Data storage"], answer: "ML with multiple layers" },
-            { question: "Which is NOT a learning type?", options: ["Supervised", "Unsupervised", "Reinforcement", "Distributed"], answer: "Distributed" },
-          ]);
-          setFlashcards([
-            { front: "What is AI?", back: "Artificial Intelligence - simulation of human intelligence by machines" },
-            { front: "What is ML?", back: "Machine Learning - algorithms that improve through experience" },
-            { front: "Neural Networks", back: "Computing systems inspired by biological neural networks" },
-            { front: "Deep Learning", back: "ML techniques using multiple layers of neural networks" },
-            { front: "Supervised Learning", back: "Learning from labeled training data" },
-          ]);
-          setCurrentStep(4);
-          setLoadingStep(null);
-          toast.dismiss(toastId);
-        }, 1500);
-        return;
-      }
     } finally {
       setLoadingStep(null);
     }

@@ -49,6 +49,10 @@ Text:
     )
     
     result_text = chat_completion.choices[0].message.content
-    result_json = json.loads(result_text)
+    try:
+        result_json = json.loads(result_text)
+    except json.JSONDecodeError as e:
+        print(f"❌ Quiz JSON parse error: {e}\nRaw response: {result_text[:500]}")
+        raise Exception("The AI returned an invalid response. Please try again.")
     
     return result_json

@@ -2,6 +2,7 @@ import os
 import uuid
 import shutil
 import asyncio
+import tempfile
 from fastapi import APIRouter, UploadFile, File, HTTPException
 from fastapi.responses import JSONResponse
 
@@ -25,9 +26,9 @@ async def transcribe_audio(file: UploadFile = File(...)):
     try:
         print(f"📁 Received file: {file.filename}")
         
-        # Save upload to temp file (use /tmp for Render deployment)
+        # Save upload to temp file (use system temp dir for cross-platform compatibility)
         file_ext = os.path.splitext(file.filename)[1] or ".mp3"
-        temp_filename = os.path.join("/tmp", f"upload_{uuid.uuid4()}{file_ext}")
+        temp_filename = os.path.join(tempfile.gettempdir(), f"upload_{uuid.uuid4()}{file_ext}")
         
         with open(temp_filename, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
