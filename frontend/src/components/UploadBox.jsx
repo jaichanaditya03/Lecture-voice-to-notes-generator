@@ -104,7 +104,7 @@ const UploadBox = ({ onFileSelect, onTranscribe, isTranscribing, selectedFile, o
     return (
         <div className="space-y-6 animate-fade-in-up">
             {/* Mode Selector */}
-            <div className="grid grid-cols-3 gap-3 p-2 bg-white/10 dark:bg-slate-900/30 rounded-2xl backdrop-blur-md">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-2 bg-white/10 dark:bg-slate-900/30 rounded-2xl backdrop-blur-md">
                 <button
                     onClick={() => setUploadMode('file')}
                     className={`py-3 px-4 rounded-xl text-sm font-semibold transition-all duration-300 flex items-center justify-center space-x-2 ${uploadMode === 'file'

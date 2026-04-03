@@ -172,7 +172,7 @@ function App() {
 
       <Navbar />
 
-      <div className="container mx-auto px-6 py-12 max-w-5xl">
+      <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 max-w-5xl">
 
         {/* Progress Stepper */}
         <div className="mb-12">
@@ -181,7 +181,7 @@ function App() {
               <React.Fragment key={step.number}>
                 <div className="flex flex-col items-center">
                   <div className={`
-                    w-12 h-12 rounded-full flex items-center justify-center font-bold text-lg transition-all duration-300
+                    w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center font-bold text-base sm:text-lg transition-all duration-300
                     ${currentStep === step.number
                       ? 'bg-gradient-to-br from-purple-600 to-blue-600 text-white shadow-lg shadow-purple-500/50 scale-110'
                       : step.completed
@@ -191,13 +191,13 @@ function App() {
                   `}>
                     {step.completed ? '✓' : step.number}
                   </div>
-                  <span className={`mt-2 text-sm font-medium ${currentStep === step.number ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-500'
+                  <span className={`mt-1 sm:mt-2 text-[10px] sm:text-sm font-medium text-center ${currentStep === step.number ? 'text-purple-600 dark:text-purple-400' : 'text-slate-500 dark:text-slate-500'
                     }`}>
                     {step.title}
                   </span>
                 </div>
                 {idx < steps.length - 1 && (
-                  <div className={`flex-1 h-1 mx-4 rounded-full transition-all duration-300 ${step.completed ? 'bg-emerald-500' : 'bg-white/20 dark:bg-slate-800/50'
+                  <div className={`flex-1 h-1 mx-2 sm:mx-4 rounded-full transition-all duration-300 ${step.completed ? 'bg-emerald-500' : 'bg-white/20 dark:bg-slate-800/50'
                     }`} />
                 )}
               </React.Fragment>
@@ -206,12 +206,12 @@ function App() {
         </div>
 
         {/* Main Content Card */}
-        <div className="backdrop-blur-xl bg-white/40 dark:bg-white/5 border border-white/40 dark:border-white/10 rounded-3xl shadow-2xl p-8 md:p-12 min-h-[500px]">
+        <div className="backdrop-blur-xl bg-white/40 dark:bg-white/5 border border-white/40 dark:border-white/10 rounded-3xl shadow-2xl p-5 sm:p-8 md:p-12 min-h-[500px]">
 
           {/* Step 1: Upload */}
           {currentStep === 1 && (
             <div className="animate-fade-in-up">
-              <h2 className="text-3xl font-bold text-slate-800 dark:text-white mb-4 text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white mb-4 text-center">
                 Upload Your Lecture Audio
               </h2>
               <p className="text-slate-600 dark:text-slate-400 text-center mb-8">
@@ -265,11 +265,11 @@ function App() {
           {/* Step 4: Quiz & Flashcards */}
           {currentStep === 4 && (
             <div className="animate-fade-in-up space-y-8">
-              <div className="flex justify-between items-center">
-                <h2 className="text-3xl font-bold text-slate-800 dark:text-white">
+              <div className="flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+                <h2 className="text-2xl sm:text-3xl font-bold text-slate-800 dark:text-white mb-2 sm:mb-0">
                   Test Your Knowledge
                 </h2>
-                <Button onClick={() => setCurrentStep(1)} variant="outline" icon={Home}>
+                <Button onClick={() => setCurrentStep(1)} variant="outline" icon={Home} className="w-full sm:w-auto">
                   Start Over
                 </Button>
               </div>
