@@ -24,11 +24,6 @@ const UploadBox = ({ onFileSelect, onTranscribe, isTranscribing, selectedFile, o
         setRecordedBlob(null);
     };
 
-    // Helper to check if URL is a YouTube URL
-    const isYouTubeUrl = (url) => {
-        return /youtube\.com|youtu\.be/.test(url);
-    };
-
     const handleFetchLink = async () => {
         if (!linkUrl) {
             toast.error('Please enter a valid URL');
@@ -39,50 +34,17 @@ const UploadBox = ({ onFileSelect, onTranscribe, isTranscribing, selectedFile, o
         const toastId = toast.loading('Fetching and transcribing link... (This may take a while)');
 
         try {
-            let transcript = null;
-
-            // For YouTube URLs, try the Vercel serverless function first (avoids cloud IP blocking)
-            if (isYouTubeUrl(linkUrl)) {
-                try {
-                    const vercelResponse = await fetch('/api/youtube-transcript', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ url: linkUrl }),
-                    });
-
-                    if (vercelResponse.ok) {
-                        const data = await vercelResponse.json();
-                        transcript = data.transcript;
-                    } else {
-                        const errorData = await vercelResponse.json().catch(() => ({}));
-                        console.warn('Vercel transcript API failed, falling back to backend:', errorData.error);
-                    }
-                } catch (vercelError) {
-                    console.warn('Vercel transcript API unavailable, falling back to backend:', vercelError.message);
-                }
-            }
-
-            // Fallback to backend API (for non-YouTube links, or if Vercel route failed)
-            if (!transcript) {
-                const response = await api.post('/fetch-audio', { url: linkUrl });
-                transcript = response.data.transcript;
-            }
-
-            if (transcript) {
+            const response = await api.post('/fetch-audio', { url: linkUrl });
+            if (response.data.transcript) {
                 toast.dismiss(toastId);
-                onTranscriptReceived(transcript);
+                onTranscriptReceived(response.data.transcript);
             } else {
                 throw new Error('No transcript returned');
             }
         } catch (error) {
             console.error(error);
             const errorMessage = error.response?.data?.error || error.message;
-
-            if (errorMessage.includes('bot') || errorMessage.includes('Sign in') || errorMessage.includes('blocking')) {
-                toast.error('YouTube is blocking automated downloads. Please try uploading the audio file directly instead.', { id: toastId, duration: 5000 });
-            } else {
-                toast.error(`Failed to process link: ${errorMessage}`, { id: toastId });
-            }
+            toast.error(`Failed to process link: ${errorMessage}`, { id: toastId, duration: 5000 });
         } finally {
             setIsFetchingLink(false);
         }
