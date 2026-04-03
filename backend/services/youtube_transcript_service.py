@@ -44,7 +44,7 @@ def get_youtube_transcript(url: str) -> str:
     try:
         # Extract video ID
         video_id = extract_video_id(url)
-        print(f"📹 Extracting transcript for video ID: {video_id}")
+        print(f"[YT-Transcript] Extracting transcript for video ID: {video_id}")
         
         # Create API instance (v1.0+ requires instance-based usage)
         ytt_api = YouTubeTranscriptApi()
@@ -52,21 +52,25 @@ def get_youtube_transcript(url: str) -> str:
         # Try English first, then fall back to any available language
         try:
             transcript = ytt_api.fetch(video_id, languages=['en'])
-        except Exception:
-            print("⚠️  English transcript not found, trying other languages...")
+        except Exception as lang_error:
+            print(f"[YT-Transcript] English not found ({lang_error}), trying other languages...")
             transcript = ytt_api.fetch(video_id)
         
         # Convert to raw data and combine all segments into one text
         raw_data = transcript.to_raw_data()
         full_transcript = " ".join([entry['text'] for entry in raw_data])
         
-        print(f"✅ Transcript extracted: {len(full_transcript)} characters")
+        print(f"[YT-Transcript] Success! Extracted {len(full_transcript)} characters")
         return full_transcript
         
     except Exception as e:
         error_msg = str(e).lower()
+        print(f"[YT-Transcript] Error: {type(e).__name__}: {e}")
+        
         if "disabled" in error_msg or "no captions" in error_msg:
             raise Exception("This video has no captions/subtitles available. Please upload the audio file directly.")
+        elif "unavailable" in error_msg or "no longer available" in error_msg:
+            raise Exception("This video is unavailable or restricted. Please try a different video or upload the audio file directly.")
         elif "not found" in error_msg or "no transcript" in error_msg:
             raise Exception("No transcript found for this video. Please upload the audio file directly.")
         elif "video id" in error_msg or "could not extract" in error_msg:

@@ -96,20 +96,32 @@ async def fetch_audio(request: YouTubeRequest):
     try:
         print(f"🔗 Processing Link: {request.url}")
         
-        # For YouTube URLs, try transcript extraction first (faster and bypasses bot detection)
+        # For YouTube URLs, use transcript extraction (yt-dlp is blocked on cloud servers)
         if is_youtube_url(request.url):
-            print("📹 YouTube URL detected - trying transcript extraction first...")
+            print("📹 YouTube URL detected - extracting transcript from captions...")
             try:
                 transcript_text = get_youtube_transcript(request.url)
                 print("✅ Transcript extracted successfully from YouTube captions!")
                 print(f"📊 Transcript length: {len(transcript_text)} characters")
                 return {"transcript": transcript_text}
             except Exception as transcript_error:
-                print(f"⚠️  Transcript extraction failed: {transcript_error}")
-                print("🔄 Falling back to audio download method...")
-                # Continue to audio download fallback below
+                # Log the full error for debugging in Render logs
+                print(f"❌ YouTube transcript extraction failed: {type(transcript_error).__name__}: {transcript_error}")
+                import traceback
+                traceback.print_exc()
+                
+                # Return a helpful error — don't attempt yt-dlp for YouTube (always blocked on cloud)
+                error_detail = str(transcript_error)
+                if "captions" in error_detail.lower() or "disabled" in error_detail.lower():
+                    user_message = "This video has no captions/subtitles available. Please upload the audio file directly instead."
+                elif "not found" in error_detail.lower():
+                    user_message = "No transcript found for this video. Please upload the audio file directly instead."
+                else:
+                    user_message = f"Could not extract YouTube transcript: {error_detail}. Please try uploading the audio file directly."
+                
+                return JSONResponse(status_code=500, content={"error": user_message})
         
-        # Download audio from link (for non-YouTube or if transcript extraction failed)
+        # For non-YouTube links, download audio and transcribe
         final_filename = download_audio_from_generic_link(request.url)
 
         # Process audio file (handles chunking for large files)
