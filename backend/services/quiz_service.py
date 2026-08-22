@@ -44,7 +44,7 @@ Text:
         ],
         model="openai/gpt-oss-120b",
         temperature=0.7,
-        max_tokens=2048,
+        max_completion_tokens=2048,
         response_format={"type": "json_object"}     
     )
     

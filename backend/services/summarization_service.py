@@ -32,9 +32,9 @@ FORMATTING RULES:
                             "content": f"Summarize this section of the lecture (Part {i+1}/{len(chunks)}):\n\n{chunk}"
                         }
                     ],
-                    model="llama-3.3-70b-versatile",
+                    model="openai/gpt-oss-120b",
                     temperature=0.7,
-                    max_tokens=1024
+                    max_completion_tokens=2048
                 )
                 raw_summaries.append(completion.choices[0].message.content)
             except Exception as e:
@@ -72,9 +72,9 @@ Main Concepts
                     "content": f"Summarize the following lecture transcript into organized notes with underlined headings and bullet points:\n\n{transcript}"
                 }
             ],
-            model="llama-3.3-70b-versatile",
+            model="openai/gpt-oss-120b",
             temperature=0.7,
-            max_tokens=1024
+            max_completion_tokens=2048
         )
         summary = chat_completion.choices[0].message.content
     
