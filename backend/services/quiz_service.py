@@ -42,10 +42,10 @@ Text:
                 "content": prompt
             }
         ],
-        model="llama-3.3-70b-versatile",
+        model="openai/gpt-oss-120b",
         temperature=0.7,
         max_tokens=2048,
-        response_format={"type": "json_object"}
+        response_format={"type": "json_object"}     
     )
     
     result_text = chat_completion.choices[0].message.content
